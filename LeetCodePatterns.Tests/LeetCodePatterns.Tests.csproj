@@ -24,4 +24,8 @@
     <ProjectReference Include="..\LeetCodePatterns.Core\LeetCodePatterns.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ArraySolverTests\" />
+  </ItemGroup>
+
 </Project>

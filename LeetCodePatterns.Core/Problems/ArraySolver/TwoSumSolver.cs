@@ -14,7 +14,7 @@ public class TwoSumSolver
             {
                 return new int[] { dict[complement], i };
             }
-            dict.Add(nums[i], i);
+            dict[nums[i]] = i;
         }
         return Array.Empty<int>();
     }

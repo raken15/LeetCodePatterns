@@ -7,3 +7,4 @@ This document serves as an index for all problem details in the project. Each li
 ## Array Solvers
 
 - [Two Sum Solver](ProblemDetails/TwoSumSolver.md)
+- [Is Palindrome](ProblemDetails/IsPalindrome.md)

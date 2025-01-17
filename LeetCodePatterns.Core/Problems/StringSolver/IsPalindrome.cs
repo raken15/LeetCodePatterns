@@ -10,11 +10,13 @@ public class IsPalindrome
         {
             throw new ArgumentNullException(nameof(s));
         }
+
+        var trimmedString = new string(s.Where(c => char.IsLetterOrDigit(c)).ToArray());
         int left = 0;
-        int right = s.Length - 1;
+        int right = trimmedString.Length - 1;
         while (left < right)
         {
-            if (char.ToLowerInvariant(s[left]) != char.ToLowerInvariant(s[right]))
+            if (char.ToLowerInvariant(trimmedString[left]) != char.ToLowerInvariant(trimmedString[right]))
             {
                 return false;
             }

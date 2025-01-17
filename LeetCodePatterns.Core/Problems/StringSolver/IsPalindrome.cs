@@ -4,22 +4,32 @@ namespace LeetCodePatterns.Core.Problems.StringSolver;
 
 public class IsPalindrome
 {
-    public static bool Solve(string s)
+    public static bool Solve(string str)
     {
-        if (s == null)
-        {
-            throw new ArgumentNullException(nameof(s));
-        }
-
-        var trimmedString = new string(s.Where(c => char.IsLetterOrDigit(c)).ToArray());
+        ArgumentNullException.ThrowIfNull(str);
         int left = 0;
-        int right = trimmedString.Length - 1;
+        int right = str.Length - 1;
         while (left < right)
         {
-            if (char.ToLowerInvariant(trimmedString[left]) != char.ToLowerInvariant(trimmedString[right]))
+            // Move the left pointer if the current character is not alphanumeric
+            if (!char.IsLetterOrDigit(str[left]))
+            {
+                left++;
+                continue;
+            }
+
+            // Move the right pointer if the current character is not alphanumeric
+            if (!char.IsLetterOrDigit(str[right]))
+            {
+                right--;
+                continue;
+            }
+            // Compare characters (case-insensitive)
+            if (char.ToLowerInvariant(str[left]) != char.ToLowerInvariant(str[right]))
             {
                 return false;
             }
+            // Move both pointers inward
             left++;
             right--;
         }

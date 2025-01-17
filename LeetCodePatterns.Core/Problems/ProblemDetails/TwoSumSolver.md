@@ -12,10 +12,12 @@ Output: `[0, 1]`
 - You cannot use the same element twice.
 
 ## Approach
-1. Use a dictionary to store the complement of each number (`target - nums[i]`) and its index.
+1. Use a dictionary to store each number (`nums[i]`) and its index as you iterate through the array.
 2. Iterate through the array:
-   - If the current number exists in the dictionary, return the indices.
-   - Otherwise, add the number and its index to the dictionary.
+   - For each number nums[i], calculate the complement (target - nums[i]).
+   - Check if the complement is already in the dictionary:
+      * If it is, return the pair of indices (the index of the complement and the current index i).
+   - If the complement is not in the dictionary, add the current number (nums[i]) and its index (i) to the dictionary.
 
 ## Time Complexity
 - **O(n)**: Single pass through the array.

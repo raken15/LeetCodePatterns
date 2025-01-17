@@ -18,8 +18,6 @@ A **palindrome** is a string that reads the same backward as forward
 **Explanation:**  
 Ignoring spaces, punctuation, and case, the string is `"amanaplanacanalpanama"`, which is a palindrome.
 
----
-
 ### Example 2
 **Input:**  
 `"race a car"`
@@ -29,8 +27,6 @@ Ignoring spaces, punctuation, and case, the string is `"amanaplanacanalpanama"`,
 
 **Explanation:**  
 Ignoring spaces, punctuation, and case, the string is `"raceacar"`, which is not a palindrome.
-
----
 
 ### Example 3
 **Input:**  
@@ -50,7 +46,7 @@ An empty string is considered a palindrome.
 
 ---
 
-### Approach
+## Solution Approach
 The **two-pointer technique** efficiently checks for palindromes by comparing characters from both ends of the string, gradually moving toward the center.
 
 1. **Initialize Pointers:**

@@ -4,6 +4,10 @@ This document serves as an index for all problem details in the project. Each li
 
 ---
 
-## Array Solvers
+## Array Solver
 
-- [Two Sum Solver](ProblemDetails/TwoSumSolver.md)
+- [Two Sum](ProblemDetails/TwoSum.md)
+
+## String Solver
+
+- [Is Palindrome](ProblemDetails/IsPalindrome.md)

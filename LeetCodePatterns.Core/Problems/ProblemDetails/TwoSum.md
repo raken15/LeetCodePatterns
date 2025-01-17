@@ -1,4 +1,4 @@
-# Two Sum Solver
+# Two Sum
 
 ## Problem Statement
 Given an array of integers `nums` and an integer `target`, return the indices of the two numbers such that they add up to `target`.
@@ -11,7 +11,7 @@ Output: `[0, 1]`
 - Each input has exactly one solution.
 - You cannot use the same element twice.
 
-## Approach
+## Solution Approach
 1. Use a dictionary to store each number (`nums[i]`) and its index as you iterate through the array.
 2. Iterate through the array:
    - For each number nums[i], calculate the complement (target - nums[i]).

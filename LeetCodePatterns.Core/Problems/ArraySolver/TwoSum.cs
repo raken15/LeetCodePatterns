@@ -2,7 +2,7 @@ using System;
 
 namespace LeetCodePatterns.Core.Problems.ArraySolver;
 
-public static class TwoSumSolver
+public static class TwoSum
 {
     public static int[] Solve(int[] nums, int target)
     {

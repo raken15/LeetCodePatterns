@@ -2,9 +2,9 @@ using System;
 
 namespace LeetCodePatterns.Core.Problems.ArraySolver;
 
-public class TwoSumSolver
+public static class TwoSumSolver
 {
-    public int[] TwoSum(int[] nums, int target)
+    public static int[] Solve(int[] nums, int target)
     {
         var dict = new Dictionary<int, int>();
         for (int i = 0; i < nums.Length; i++)

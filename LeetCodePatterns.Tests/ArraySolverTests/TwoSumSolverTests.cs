@@ -10,8 +10,7 @@ public class TwoSumSolverTests
     [InlineData(new int[] { 8, 5, 3, 7 }, 12, new int[] { 1, 3 })]
     public void TwoSum_CorrectIndicesReturned(int[] nums, int target, int[] expectedIndices)
     {
-        var solver = new TwoSumSolver();
-        var result = solver.TwoSum(nums, target);
+        var result = TwoSumSolver.Solve(nums, target);
         Assert.Equal(expectedIndices, result);
     }
 }

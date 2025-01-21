@@ -1,23 +1,63 @@
 namespace LeetCodePatterns.Core.Helpers;
 
+/// <summary>
+/// Represents a minimum heap data structure with the following properties:
+/// 1. The parent node is always smaller than or equal to its children.
+/// 2. The root element is the smallest element in the heap.
+/// 3. The heap is a complete binary tree, meaning all levels are fully filled except the last one,
+///    which is filled from left to right.
+/// </summary>
+/// <remarks>
+/// This implementation is NOT thread-safe. If multiple threads need to access 
+/// the heap simultaneously, synchronization should be handled externally.
+/// </remarks>
+/// <typeparam name="T">The type of elements in the heap. Must implement <see cref="IComparable"/>.</typeparam>
 public class MinHeap<T> where T : IComparable
 {
+    private const int MAX_CAPACITY = int.MaxValue / 2;
     private List<T> _elements;
     private int LastIndex => _elements.Count - 1;
     public int Size => _elements.Count;
     public bool IsEmpty => _elements.Count == 0;
+
     /// <summary>
     /// Initializes a new instance of the MinHeap class with an optional initial capacity.
+    /// If no initial capacity is provided, an empty list is created.
     /// </summary>
     /// <param name="initialCapacity">
-    /// The initial number of elements that the heap can store. If not specified,
-    /// the heap will use dynamic resizing to accommodate elements.
+    /// The initial capacity of the heap. If null, the heap starts with an empty list.
+    /// The capacity must be greater than zero and cannot exceed the maximum allowed capacity.
     /// </param>
+    /// <remarks>
+    /// When elements are inserted into the heap, and the number of elements exceeds the initial capacity,
+    /// the internal list will automatically resize to accommodate the new elements. This resizing happens dynamically
+    /// and may incur some performance overhead as the capacity increases.
+    /// </remarks>
     public MinHeap(int? initialCapacity = null)
     {
-        _elements = initialCapacity.HasValue
-            ? new List<T>(initialCapacity.Value) // Initialize with the given capacity
-            : new List<T>();                    // Default to dynamic resizing
+        if (initialCapacity == null)
+        {
+            // Use an empty list if no initial capacity is specified
+            _elements = new List<T>();
+        }
+        else
+        {
+            int capacity = initialCapacity.Value;
+
+            // Validate the provided capacity
+            if (capacity <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(initialCapacity), "Capacity must be greater than zero.");
+            }
+
+            if (capacity > MAX_CAPACITY)
+            {
+                throw new ArgumentOutOfRangeException(nameof(initialCapacity), $"Capacity cannot exceed {MAX_CAPACITY}.");
+            }
+
+            // Initialize the internal list with the given capacity
+            _elements = new List<T>(MAX_CAPACITY);
+        }
     }
     /// <summary>
     /// Returns the root element of the heap without removing it.

@@ -39,7 +39,7 @@ public class TopKElementsMinHeap
         }
         // The heap now contains the top K elements
         var topKElements = new int[k];
-        for (int i = k-1; i >= 0; i++)
+        for (int i = k-1; i >= 0; i--)
         {
             topKElements[i] = minHeap.ExtractMin();
         }

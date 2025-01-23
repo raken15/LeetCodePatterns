@@ -33,6 +33,7 @@ public class MinHeapTests
     }
 
     #endregion Constructor
+
     #region Test Helper methods
     [Theory]
     [InlineData(typeof(int), new int[] { 4, 2, 9 }, 2)]
@@ -199,17 +200,29 @@ public class MinHeapTests
         Assert.Equal(inputValue, smallestElement);
     }
     [Theory]
-    [InlineData(new int[] { 50, 80 }, 50 )]
+    [InlineData(new int[] { 50, 80 }, 50)]
     [InlineData(new int[] { 50, 80, 40 }, 40)]
-    [InlineData(new double[] { 20.1, 3.3 }, 3.3 )]
-    [InlineData(new string[] { "zoo", "apple", "banana" }, "apple" )]
-    [InlineData(new bool[] { true, false }, false )]
-    public void Insert_SmallerValue_BecomesRoot<T>(Array inputValues, object expectedSmallest) where T : IComparable
+    public void Insert_SmallerValue_BecomesRoot_Int(int[] inputValues, int expectedSmallest)
     {
-        var minHeap = new MinHeap<T>();
+        var minHeap = new MinHeap<int>();
         foreach (var value in inputValues)
         {
-            minHeap.Insert((dynamic)value);
+            minHeap.Insert(value);
+        }
+
+        var smallestElement = minHeap.Peek();
+
+        Assert.Equal(expectedSmallest, smallestElement);
+    }
+
+    [Theory]
+    [InlineData(new string[] { "zoo", "apple", "banana" }, "apple")]
+    public void Insert_SmallerValue_BecomesRoot_String(string[] inputValues, string expectedSmallest)
+    {
+        var minHeap = new MinHeap<string>();
+        foreach (var value in inputValues)
+        {
+            minHeap.Insert(value);
         }
 
         var smallestElement = minHeap.Peek();

@@ -26,7 +26,6 @@
 
   <ItemGroup>
     <Folder Include="ArraySolverTests\" />
-    <Folder Include="CommonPatternsTests\" />
     <Folder Include="HelpersTests\" />
     <Folder Include="StringSolverTests\" />
   </ItemGroup>

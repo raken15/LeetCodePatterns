@@ -7,7 +7,7 @@ public class TopKFrequentElements
     /// <summary>
     /// Given an array of integers nums and an integer k, return the k most frequent elements in the array.
     /// </summary>
-    public static List<int> Solve(int[] inputArr, int k)
+    public static int[] Solve(int[] inputArr, int k)
     {
         if (k <= 0 || inputArr == null || inputArr.Length == 0)
         {
@@ -45,12 +45,11 @@ public class TopKFrequentElements
             }
         }
         // The heap now contains the top K elements
-        var topKElements = new List<int>();
-        while (!minHeap.IsEmpty)
+        var topKElements = new int[k];
+        for (int i = k - 1; i >= 0; i--)
         {
-            topKElements.Add(minHeap.ExtractMin().Item1);
+            topKElements[i] = minHeap.ExtractMin().Item1;
         }
-        topKElements.Reverse(); // To get the largest elements in descending order
 
         return topKElements;
     }

@@ -18,7 +18,8 @@ public class TopKElementsTests
 
     [Theory]
     [InlineData(null, 2)]
-    public void Solve_ThrowsArgumentException_WhenInputArrayIsNull(
+    [InlineData(new int[] { }, 2)]
+    public void Solve_ThrowsArgumentException_WhenInputArrayIsNullOrEmpty(
         int[] inputArr, int k)
     {
         Assert.Throws<ArgumentException>(() => TopKElementsMinHeap.Solve(inputArr, k));
@@ -34,22 +35,15 @@ public class TopKElementsTests
     }
 
     [Theory]
-    [InlineData(new int[] { 1, 2, 3, 4, 5, 6 }, 6, new int[] { 6, 5, 4, 3, 2, 1 })]
-    public void Solve_ReturnsAllElements_WhenKIsEqualToLengthOfInputArray(
-        int[] inputArr, int k, int[] expected)
+    [InlineData(new int[] { 1, 2, 3, 4, 5, 6 }, 6)]
+    [InlineData(new int[] { 1, 2, 3, 4, 5, 6 }, 7)]
+    public void Solve_ReturnsAllElementsDescending_WhenKIsEqualOrGreaterToLengthOfInputArray(
+        int[] inputArr, int k)
     {
+        int[] expected = inputArr.OrderByDescending(x => x).ToArray();
+
         var result = TopKElementsMinHeap.Solve(inputArr, k);
 
         Assert.Equal(expected, result);
-    }
-
-    [Theory]
-    [InlineData(new int[] { 1, 2, 3, 4, 5, 6 }, 7, new int[] { 6, 5, 4, 3, 2, 1 })]
-    public void Solve_ReturnsEmptyArray_WhenKIsGreaterThanLengthOfInputArray(
-        int[] inputArr, int k, int[] expected)
-    {
-        var result = TopKElementsMinHeap.Solve(inputArr, k);
-
-        Assert.Equal(expected.OrderByDescending(x => x).ToArray(), result);
     }
 }

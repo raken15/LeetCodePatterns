@@ -1,5 +1,3 @@
-using System;
-
 namespace LeetCodePatterns.Tests.StringSolverTests;
 
 public class IsPalindromeTests

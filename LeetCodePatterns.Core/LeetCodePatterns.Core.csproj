@@ -10,6 +10,7 @@
     <Folder Include="Problems\ArraySolver\" />
     <Folder Include="Problems\ProblemDetails\" />
     <Folder Include="Problems\StringSolver\" />
+    <Folder Include="Helpers\" />
   </ItemGroup>
 
 </Project>

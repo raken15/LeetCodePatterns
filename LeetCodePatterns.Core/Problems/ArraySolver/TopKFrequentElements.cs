@@ -9,9 +9,9 @@ public class TopKFrequentElements
     /// </summary>
     public static List<int> Solve(int[] inputArr, int k)
     {
-        if (k <= 0 || inputArr == null || inputArr.Length < k)
+        if (k <= 0 || inputArr == null || inputArr.Length == 0)
         {
-            throw new ArgumentException("Input array must have at least k elements, and k can't be less than 1");
+            throw new ArgumentException("Input array must contain at least one element, and k must be greater than 0.");
         }
         // Handle case when k is greater than nums.Length by returning the entire array sorted
         if (k > inputArr.Length)

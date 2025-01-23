@@ -13,6 +13,11 @@ public class TopKFrequentElements
         {
             throw new ArgumentException("Input array must have at least k elements, and k can't be less than 1");
         }
+        // Handle case when k is greater than nums.Length by returning the entire array sorted
+        if (k > inputArr.Length)
+        {
+            k = inputArr.Length; // Adjust k to be the size of the array
+        }
         var frequencyMap = new Dictionary<int, int>();
         foreach (var num in inputArr)
         {
@@ -45,6 +50,7 @@ public class TopKFrequentElements
         {
             topKElements.Add(minHeap.ExtractMin().Item1);
         }
+        topKElements.Reverse(); // To get the largest elements in descending order
 
         return topKElements;
     }

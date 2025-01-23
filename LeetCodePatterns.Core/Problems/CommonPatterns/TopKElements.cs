@@ -10,13 +10,18 @@ public class TopKElementsMinHeap
         /// </summary>
         /// <param name="inputArr">The input array of integers</param>
         /// <param name="k">The number of largest elements to return</param>
-        /// <returns>The k largest elements in the array, in ascending order</returns>
+        /// <returns>The k largest elements in the array, in descending order</returns>
         /// <exception cref="ArgumentException">Thrown when the input array is null or empty, or k is less than or equal to 0</exception>
     public static int[] Solve(int[] inputArr, int k)
     {
         if (k <= 0 || inputArr == null || inputArr.Length < k)
         {
             throw new ArgumentException("Input array must have at least k elements, and k can't be less than 1");
+        }
+        // Handle case when k is greater than nums.Length by returning the entire array sorted
+        if (k > inputArr.Length)
+        {
+            k = inputArr.Length; // Adjust k to be the size of the array
         }
         // Create a MinHeap of capacity K
         var minHeap = new MinHeap<int>(k+1);
@@ -34,7 +39,7 @@ public class TopKElementsMinHeap
         }
         // The heap now contains the top K elements
         var topKElements = new int[k];
-        for (int i = 0; i < k; i++)
+        for (int i = k-1; i >= 0; i++)
         {
             topKElements[i] = minHeap.ExtractMin();
         }

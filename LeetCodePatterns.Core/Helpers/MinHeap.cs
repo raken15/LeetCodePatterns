@@ -14,12 +14,16 @@ namespace LeetCodePatterns.Core.Helpers;
 /// <typeparam name="T">The type of elements in the heap. Must implement <see cref="IComparable"/>.</typeparam>
 public class MinHeap<T> where T : IComparable
 {
+    #region Constants
     private const int MAX_CAPACITY = int.MaxValue / 2;
+    #endregion Constants
+    #region Fields and Properties
     private List<T> _elements;
     private int LastIndex => _elements.Count - 1;
     public int Size => _elements.Count;
     public bool IsEmpty => _elements.Count == 0;
-
+    #endregion Fields and Properties
+    #region Constructor
     /// <summary>
     /// Initializes a new instance of the MinHeap class with an optional initial capacity.
     /// If no initial capacity is provided, an empty list is created.
@@ -59,6 +63,8 @@ public class MinHeap<T> where T : IComparable
             _elements = new List<T>(MAX_CAPACITY);
         }
     }
+    #endregion Constructor
+    #region Public Methods
     /// <summary>
     /// Returns the root element of the heap without removing it.
     /// </summary>
@@ -89,51 +95,6 @@ public class MinHeap<T> where T : IComparable
         HeapifyUp(LastIndex);
     }
     /// <summary>
-    /// Restore the heap property after inserting a new element into the heap.
-    /// </summary>
-    /// <remarks>
-    /// In a min heap, the parent node is always smaller than or equal to its children.
-    /// Starting from the newly inserted element, check if it is smaller than its parent.
-    /// If it is, swap it with the parent and move up the tree until the heap property is maintained.
-    /// The loop terminates naturally using break when the condition is satisfied:
-    /// the inserted element is no longer smaller than its parent.
-    /// </remarks>
-    /// <param name="index">The index of the element to be restored in the heap.</param>
-    /// <remarks>
-    /// The node index in binary heap is like a node in binary tree and is represented as:
-    /// The left child of a node at index i is located at index 2i + 1.
-    /// The right child of a node at index i is located at index 2i + 2.
-    /// The parent of a node at index i is located at index(i - 1) / 2.
-    /// </remarks>
-    public void HeapifyUp(int index)
-    {
-        while (index > 0)
-        {
-            int parentIndex = (index - 1) / 2;
-            if (_elements[index].CompareTo(_elements[parentIndex]) < 0)
-            {
-                Swap(index, parentIndex);
-                index = parentIndex;
-            }
-            else
-            {
-                break;
-            }
-        }
-    }
-    /// <summary>
-    /// Swap the elements at two given indices in the heap.
-    /// This helper function is used in both HeapifyUp and HeapifyDown.
-    /// </summary>
-    /// <param name="index1">The first index to be swapped.</param>
-    /// <param name="index2">The second index to be swapped.</param>
-    private void Swap(int index1, int index2)
-    {
-        T temp = _elements[index1];
-        _elements[index1] = _elements[index2];
-        _elements[index2] = temp;
-    }
-    /// <summary>
     /// Returns and removes the smallest element from the heap.
     /// Also handle edge cases that the heap is empty or have only one element
     /// </summary>
@@ -151,6 +112,42 @@ public class MinHeap<T> where T : IComparable
         }
         HeapifyDown(0);
         return min;
+    }
+    public void Clear() => _elements.Clear();
+    #endregion Public Methods
+    #region Private Methods
+    /// <summary>
+    /// Restore the heap property after inserting a new element into the heap.
+    /// </summary>
+    /// <remarks>
+    /// In a min heap, the parent node is always smaller than or equal to its children.
+    /// Starting from the newly inserted element, check if it is smaller than its parent.
+    /// If it is, swap it with the parent and move up the tree until the heap property is maintained.
+    /// The loop terminates naturally using break when the condition is satisfied:
+    /// the inserted element is no longer smaller than its parent.
+    /// </remarks>
+    /// <param name="index">The index of the element to be restored in the heap.</param>
+    /// <remarks>
+    /// The node index in binary heap is like a node in binary tree and is represented as:
+    /// The left child of a node at index i is located at index 2i + 1.
+    /// The right child of a node at index i is located at index 2i + 2.
+    /// The parent of a node at index i is located at index(i - 1) / 2.
+    /// </remarks>
+    private void HeapifyUp(int index)
+    {
+        while (index > 0)
+        {
+            int parentIndex = (index - 1) / 2;
+            if (_elements[index].CompareTo(_elements[parentIndex]) < 0)
+            {
+                Swap(index, parentIndex);
+                index = parentIndex;
+            }
+            else
+            {
+                break;
+            }
+        }
     }
     /// <summary>
     /// Restores the heap property after removing the root element from the heap.
@@ -198,5 +195,17 @@ public class MinHeap<T> where T : IComparable
             leftChildIndex = 2 * index + 1;
         }
     }
-    public void Clear() => _elements.Clear();
+    /// <summary>
+    /// Swap the elements at two given indices in the heap.
+    /// This helper function is used in both HeapifyUp and HeapifyDown.
+    /// </summary>
+    /// <param name="index1">The first index to be swapped.</param>
+    /// <param name="index2">The second index to be swapped.</param>
+    private void Swap(int index1, int index2)
+    {
+        T temp = _elements[index1];
+        _elements[index1] = _elements[index2];
+        _elements[index2] = temp;
+    }
+    #endregion Private Methods
 }

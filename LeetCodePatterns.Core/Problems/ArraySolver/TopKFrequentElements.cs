@@ -13,11 +13,6 @@ public class TopKFrequentElements
         {
             throw new ArgumentException("Input array must contain at least one element, and k must be greater than 0.");
         }
-        // Handle case when k is greater than nums.Length by returning the entire array sorted
-        if (k > inputArr.Length)
-        {
-            k = inputArr.Length; // Adjust k to be the size of the array
-        }
         var frequencyMap = new Dictionary<int, int>();
         foreach (var num in inputArr)
         {
@@ -30,22 +25,22 @@ public class TopKFrequentElements
                 frequencyMap[num] = 1;
             }
         }
-        if(k > frequencyMap.Count)
-        {
-            k = frequencyMap.Count;
-        }
-        // Create a MinHeap of capacity K
-        var minHeap = new MinHeap<(int, int)>(k + 1);
-        // Process each element in the array
+        k = Math.Min(k, frequencyMap.Count); // Limit k to the size of the frequencyMap
+        var minHeap = new MinHeap<(int, int)>(k);
         foreach (var kvp in frequencyMap)
         {
-            // Add the number to the heap
-            minHeap.Insert((kvp.Value, kvp.Key));
-
-            // If the heap exceeds size K, remove the smallest element
-            if (minHeap.Size > k)
+            if (minHeap.Size < k)
+            {
+                minHeap.Insert((kvp.Value, kvp.Key));
+            }
+            // Replace the smallest element in the heap if:
+            // - The current frequency is higher than the smallest frequency in the heap, or
+            // - The frequencies are equal, but the current key is larger.
+            else if (kvp.Value > minHeap.Peek().Item1 || 
+                     (kvp.Value == minHeap.Peek().Item1 && kvp.Key > minHeap.Peek().Item2))
             {
                 minHeap.ExtractMin();
+                minHeap.Insert((kvp.Value, kvp.Key));
             }
         }
         // The heap now contains the top K elements

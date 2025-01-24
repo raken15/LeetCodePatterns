@@ -30,13 +30,17 @@ public class TopKFrequentElements
                 frequencyMap[num] = 1;
             }
         }
+        if(k > frequencyMap.Count)
+        {
+            k = frequencyMap.Count;
+        }
         // Create a MinHeap of capacity K
         var minHeap = new MinHeap<(int, int)>(k + 1);
         // Process each element in the array
-        foreach (var num in inputArr)
+        foreach (var kvp in frequencyMap)
         {
             // Add the number to the heap
-            minHeap.Insert((num, frequencyMap[num]));
+            minHeap.Insert((kvp.Value, kvp.Key));
 
             // If the heap exceeds size K, remove the smallest element
             if (minHeap.Size > k)
@@ -48,7 +52,7 @@ public class TopKFrequentElements
         var topKElements = new int[k];
         for (int i = k - 1; i >= 0; i--)
         {
-            topKElements[i] = minHeap.ExtractMin().Item1;
+            topKElements[i] = minHeap.ExtractMin().Item2;
         }
 
         return topKElements;

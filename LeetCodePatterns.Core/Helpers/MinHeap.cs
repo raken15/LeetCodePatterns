@@ -15,7 +15,7 @@ namespace LeetCodePatterns.Core.Helpers;
 public class MinHeap<T> where T : IComparable
 {
     #region Constants
-    private const int MAX_CAPACITY = int.MaxValue / 2;
+    private const int MAX_CAPACITY = int.MaxValue / 4;
     #endregion Constants
     #region Fields and Properties
     private List<T> _elements;
@@ -60,7 +60,7 @@ public class MinHeap<T> where T : IComparable
             }
 
             // Initialize the internal list with the given capacity
-            _elements = new List<T>(MAX_CAPACITY);
+            _elements = new List<T>(capacity);
         }
     }
     #endregion Constructor

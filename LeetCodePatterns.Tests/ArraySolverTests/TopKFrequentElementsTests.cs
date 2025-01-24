@@ -52,6 +52,8 @@ public class TopKFrequentElementsTests
     [InlineData(new int[] { 1, 1, 2, 2, 3, 3 }, 2, new int[] { 3, 2 })]
     [InlineData(new int[] { 2, 2, 1, 1, 3, 3 }, 1, new int[] { 3 })]
     [InlineData(new int[] { 2, 2, 1, 1, 3, 3 }, 3, new int[] { 3, 2, 1 })]
+    [InlineData(new int[] { 2, 2, 1, 1, 3 }, 3, new int[] { 2, 1, 3 })]
+    [InlineData(new int[] { 2, 2, 1, 3  }, 2, new int[] { 2, 3 })]
     public void Solve_ReturnsKElementsDescending_HaveElementsWithEqualFrequency(
     int[] inputArr, int k, int[] expected)
     {

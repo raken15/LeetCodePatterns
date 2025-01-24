@@ -33,6 +33,7 @@ public class TopKFrequentElements
             {
                 minHeap.Insert((kvp.Value, kvp.Key));
             }
+            // The following condition is only evaluated when the heap contains at least k elements.
             // Replace the smallest element in the heap if:
             // - The current frequency is higher than the smallest frequency in the heap, or
             // - The frequencies are equal, but the current key is larger.

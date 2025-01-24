@@ -12,6 +12,8 @@ namespace LeetCodePatterns.Core.Helpers;
 /// the heap simultaneously, synchronization should be handled externally.
 /// </remarks>
 /// <typeparam name="T">The type of elements in the heap. Must implement <see cref="IComparable"/>.</typeparam>
+/// 
+
 public class MinHeap<T> where T : IComparable
 {
     #region Constants
@@ -20,7 +22,9 @@ public class MinHeap<T> where T : IComparable
     #region Fields and Properties
     private List<T> _elements;
     private int LastIndex => _elements.Count - 1;
+    /// <summary>Gets the amount of elements in the heap.</summary>
     public int Size => _elements.Count;
+    /// <summary>Returns true if the heap is empty; otherwise, false.</summary>
     public bool IsEmpty => _elements.Count == 0;
     #endregion Fields and Properties
     #region Constructor
@@ -113,6 +117,7 @@ public class MinHeap<T> where T : IComparable
         HeapifyDown(0);
         return min;
     }
+    /// <summary>Removes all elements from the heap, resulting in an empty heap.</summary>
     public void Clear() => _elements.Clear();
     #endregion Public Methods
     #region Private Methods

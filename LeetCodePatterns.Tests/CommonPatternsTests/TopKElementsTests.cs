@@ -11,7 +11,7 @@ public class TopKElementsTests
     public void Solve_ReturnsTopKElements_WhenValidInput(
         int[] inputArr, int k, int[] expected)
     {
-        var result = TopKElementsMinHeap.Solve(inputArr, k);
+        var result = TopKElements.Solve(inputArr, k);
 
         Assert.Equal(expected, result);
     }
@@ -22,7 +22,7 @@ public class TopKElementsTests
     public void Solve_ThrowsArgumentException_WhenInputArrayIsNullOrEmpty(
         int[] inputArr, int k)
     {
-        Assert.Throws<ArgumentException>(() => TopKElementsMinHeap.Solve(inputArr, k));
+        Assert.Throws<ArgumentException>(() => TopKElements.Solve(inputArr, k));
     }
 
     [Theory]
@@ -31,7 +31,7 @@ public class TopKElementsTests
     public void Solve_ThrowsArgumentException_WhenKIsZeroOrLessThanZero(
         int[] inputArr, int k)
     {
-        Assert.Throws<ArgumentException>(() => TopKElementsMinHeap.Solve(inputArr, k));
+        Assert.Throws<ArgumentException>(() => TopKElements.Solve(inputArr, k));
     }
 
     [Theory]
@@ -42,7 +42,7 @@ public class TopKElementsTests
     {
         int[] expected = inputArr.OrderByDescending(x => x).ToArray();
 
-        var result = TopKElementsMinHeap.Solve(inputArr, k);
+        var result = TopKElements.Solve(inputArr, k);
 
         Assert.Equal(expected, result);
     }
@@ -53,7 +53,7 @@ public class TopKElementsTests
     public void Solve_ReturnsKElementsDescending_HaveElementsWithEqualValue(
     int[] inputArr, int k, int[] expected)
     {
-        var result = TopKElementsMinHeap.Solve(inputArr, k);
+        var result = TopKElements.Solve(inputArr, k);
 
         Assert.Equal(expected, result);
     }

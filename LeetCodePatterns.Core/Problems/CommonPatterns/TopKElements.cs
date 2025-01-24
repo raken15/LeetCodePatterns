@@ -3,7 +3,7 @@ using LeetCodePatterns.Core.Helpers;
 namespace LeetCodePatterns.Core.Problems.CommonPatterns;
 
 
-public class TopKElementsMinHeap
+public class TopKElements
 {
         /// <summary>
         /// Given an array of integers and an integer k, return the k largest elements in the array.
@@ -18,28 +18,22 @@ public class TopKElementsMinHeap
         {
             throw new ArgumentException("Input array must contain at least one element, and k must be greater than 0.");
         }
-        // Handle case when k is greater than nums.Length by returning the entire array sorted
-        if (k > inputArr.Length)
-        {
-            k = inputArr.Length; // Adjust k to be the size of the array
-        }
-        // Create a MinHeap of capacity K
-        var minHeap = new MinHeap<int>(k+1);
-        // Process each element in the array
+        k = Math.Min(k, inputArr.Length); // Limit k to the size of the input array
+        var minHeap = new MinHeap<int>(k);
         foreach (var num in inputArr)
         {
-            // Add the number to the heap
-            minHeap.Insert(num);
-
-            // If the heap exceeds size K, remove the smallest element
-            if (minHeap.Size > k)
+            if (minHeap.Size < k)
+            {
+                minHeap.Insert(num);
+            }
+            else if (num > minHeap.Peek())
             {
                 minHeap.ExtractMin();
+                minHeap.Insert(num);
             }
         }
-        // The heap now contains the top K elements
         var topKElements = new int[k];
-        for (int i = k-1; i >= 0; i--)
+        for (int i = k-1; i >= 0; i--) // descending order
         {
             topKElements[i] = minHeap.ExtractMin();
         }

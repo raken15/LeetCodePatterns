@@ -15,7 +15,7 @@ namespace LeetCodePatterns.Core.Helpers;
 public class MinHeap<T> where T : IComparable
 {
     #region Constants
-    private const int MAX_CAPACITY = int.MaxValue / 2;
+    private const int MAX_INITIAL_CAPACITY = int.MaxValue / 4; // Chosen to prevent excessive memory allocation for the minHeap
     #endregion Constants
     #region Fields and Properties
     private List<T> _elements;
@@ -54,13 +54,13 @@ public class MinHeap<T> where T : IComparable
                 throw new ArgumentOutOfRangeException(nameof(initialCapacity), "Capacity must be greater than zero.");
             }
 
-            if (capacity > MAX_CAPACITY)
+            if (capacity > MAX_INITIAL_CAPACITY)
             {
-                throw new ArgumentOutOfRangeException(nameof(initialCapacity), $"Capacity cannot exceed {MAX_CAPACITY}.");
+                throw new ArgumentOutOfRangeException(nameof(initialCapacity), $"Capacity cannot exceed {MAX_INITIAL_CAPACITY}.");
             }
 
             // Initialize the internal list with the given capacity
-            _elements = new List<T>(MAX_CAPACITY);
+            _elements = new List<T>(capacity);
         }
     }
     #endregion Constructor

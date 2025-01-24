@@ -7,11 +7,11 @@ public class TopKFrequentElements
     /// <summary>
     /// Given an array of integers nums and an integer k, return the k most frequent elements in the array.
     /// </summary>
-    public static List<int> Solve(int[] inputArr, int k)
+    public static int[] Solve(int[] inputArr, int k)
     {
-        if (k <= 0 || inputArr == null || inputArr.Length < k)
+        if (k <= 0 || inputArr == null || inputArr.Length == 0)
         {
-            throw new ArgumentException("Input array must have at least k elements, and k can't be less than 1");
+            throw new ArgumentException("Input array must contain at least one element, and k must be greater than 0.");
         }
         var frequencyMap = new Dictionary<int, int>();
         foreach (var num in inputArr)
@@ -25,25 +25,29 @@ public class TopKFrequentElements
                 frequencyMap[num] = 1;
             }
         }
-        // Create a MinHeap of capacity K
-        var minHeap = new MinHeap<(int, int)>(k + 1);
-        // Process each element in the array
-        foreach (var num in inputArr)
+        k = Math.Min(k, frequencyMap.Count); // Limit k to the size of the frequencyMap
+        var minHeap = new MinHeap<(int, int)>(k);
+        foreach (var kvp in frequencyMap)
         {
-            // Add the number to the heap
-            minHeap.Insert((num, frequencyMap[num]));
-
-            // If the heap exceeds size K, remove the smallest element
-            if (minHeap.Size > k)
+            if (minHeap.Size < k)
+            {
+                minHeap.Insert((kvp.Value, kvp.Key));
+            }
+            // The following condition is only evaluated when the heap contains at least k elements.
+            // Replace the smallest element in the heap if:
+            // - The current frequency is higher than the smallest frequency in the heap, or
+            // - The frequencies are equal, but the current key is larger.
+            else if (kvp.Value > minHeap.Peek().Item1 || 
+                     (kvp.Value == minHeap.Peek().Item1 && kvp.Key > minHeap.Peek().Item2))
             {
                 minHeap.ExtractMin();
+                minHeap.Insert((kvp.Value, kvp.Key));
             }
         }
-        // The heap now contains the top K elements
-        var topKElements = new List<int>();
-        while (!minHeap.IsEmpty)
+        var topKElements = new int[k];
+        for (int i = k - 1; i >= 0; i--) // descending order
         {
-            topKElements.Add(minHeap.ExtractMin().Item1);
+            topKElements[i] = minHeap.ExtractMin().Item2;
         }
 
         return topKElements;

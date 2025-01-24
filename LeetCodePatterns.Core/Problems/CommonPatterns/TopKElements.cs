@@ -26,6 +26,7 @@ public class TopKElements
             {
                 minHeap.Insert(num);
             }
+            // Replace the smallest element in the heap if the current element is larger
             else if (num > minHeap.Peek())
             {
                 minHeap.ExtractMin();

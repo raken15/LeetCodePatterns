@@ -72,4 +72,4 @@ jobs:
     steps:
       # Runs unit tests in Release configuration without rebuilding or restoring dependencies
       - name: Test
-        run: dotnet test --configuration Release --no-build --no-restore
+        run: dotnet test ./LeetCodePatterns.Tests/LeetCodePatterns.Tests.csproj --configuration Release --no-build --no-restore

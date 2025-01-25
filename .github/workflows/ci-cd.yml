@@ -37,7 +37,7 @@ jobs:
             ${{ runner.os }}-nuget-
           
       - name: Restore dependencies
-        run: dotnet restore ./LeetCodePatterns.sln # Restore NuGet packages
+        run: dotnet restore # Restore NuGet packages
 
       # Restore build cache (bin/obj)
       - name: Restore build cache
@@ -51,7 +51,7 @@ jobs:
             ${{ runner.os }}-build-
 
       - name: Build
-        run: dotnet build ./LeetCodePatterns.sln --configuration Release --no-restore # Build the solution
+        run: dotnet build --configuration Release --no-restore # Build the solution
 
         # Cache build outputs (bin/obj)
       - name: Cache build outputs
@@ -63,6 +63,8 @@ jobs:
           key: ${{ runner.os }}-build-${{ hashFiles('**/*.csproj') }}
           restore-keys: |
             ${{ runner.os }}-build-
+      - name: List directory contents
+        run: ls -R
       
   test:
     needs: build  # Ensure the test job runs after the build job
@@ -74,4 +76,4 @@ jobs:
         run: ls -R
       # Runs unit tests in Release configuration without rebuilding or restoring dependencies
       - name: Test
-        run: dotnet test ./LeetCodePatterns.sln --configuration Release --no-build --no-restore
+        run: dotnet test --configuration Release --no-build --no-restore

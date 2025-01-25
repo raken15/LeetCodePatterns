@@ -65,6 +65,12 @@ jobs:
             ${{ runner.os }}-build-
       - name: List directory contents
         run: ls -R
+          # Upload the build artifacts so the tests job can access them
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-output
+          path: ./LeetCodePatterns/bin/Release/net8.0
       
   test:
     needs: build  # Ensure the test job runs after the build job
@@ -72,6 +78,11 @@ jobs:
     timeout-minutes: 30  # Set a timeout of 30 minutes for this job
 
     steps:
+      # Download the build artifacts uploaded by the build job
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-output
       - name: List directory contents
         run: ls -R
       # Runs unit tests in Release configuration without rebuilding or restoring dependencies

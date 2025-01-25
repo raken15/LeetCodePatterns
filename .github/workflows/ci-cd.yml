@@ -16,6 +16,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest # Use a Linux VM for perfomance
+    timeout-minutes: 30  # Set a timeout of 30 minutes for this job
 
     steps:
       - name: Checkout code
@@ -54,7 +55,7 @@ jobs:
 
         # Cache build outputs (bin/obj)
       - name: Cache build outputs
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             **/bin
@@ -66,6 +67,7 @@ jobs:
   test:
     needs: build  # Ensure the test job runs after the build job
     runs-on: ubuntu-latest  # Or windows-latest depending on your needs
+    timeout-minutes: 30  # Set a timeout of 30 minutes for this job
 
     steps:
       # Runs unit tests in Release configuration without rebuilding or restoring dependencies

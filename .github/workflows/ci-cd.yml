@@ -2,30 +2,75 @@ name: CI/CD LeetCode Patterns
 
 on:
   push:
+    paths:
+      - '**/*.cs'       # Include all C# source files
+      - '**/*.csproj'   # Include project files
+      - '**/*.sln'      # Include solution file
     branches:
       - main # Trigger workflow on push to 'main'
   pull_request:
     branches:
       - main # Trigger workflow on pull requests targeting 'main'
+  workflow_dispatch:  # Allow workflow to be triggered Manually
 
 jobs:
-  build-and-test:
+  build:
     runs-on: ubuntu-latest # Use a Linux VM for perfomance
+    timeout-minutes: 30  # Set a timeout of 30 minutes for this job
 
     steps:
+      # Fetch the repository at the triggering commit
       - name: Checkout code
-        uses: actions/checkout@v4 # Fetch the repository at the triggering commit
+        uses: actions/checkout@v4
       
+      # Use the .NET SDK version 8.0
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with :
-          dotnet-version: 8.0 # Use the .NET SDK version 8.0
+          dotnet-version: 8.0
 
+      # Cache NuGet packages
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages  # Path to the NuGet package cache
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}  # Cache key depends on .csproj file hashes
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      # Restore NuGet packages 
+      # Uses cache to avoid restoring unchanged packages 
       - name: Restore dependencies
-        run: dotnet restore # Restore NuGet packages
-      
+        run: dotnet restore
+
+      # Restore build cache (bin/obj)
+      - name: Restore build cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            **/bin
+            **/obj
+          key: ${{ runner.os }}-build-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-build-
+
+      # Build the solution in Release configuration restoring dependencie
+      # Uses cache to avoid rebuilding unchanged files
       - name: Build
-        run: dotnet build --configuration Release --no-restore # Build the solution
-      
+        run: dotnet build --configuration Release --no-restore
+
+      # Cache build outputs (bin/obj)
+      - name: Cache build outputs
+        uses: actions/cache@v4
+        with:
+          path: |
+            **/bin
+            **/obj
+          key: ${{ runner.os }}-build-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-build-
+
+      # Runs unit tests in Release configuration without rebuilding or restoring dependencies
       - name: Test
-        run: dotnet test --configuration Release --no-restore # Run your tests
+        run: dotnet test --configuration Release --no-build --no-restore
+      

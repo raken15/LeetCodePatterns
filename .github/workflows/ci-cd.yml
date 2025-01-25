@@ -21,7 +21,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4 # Fetch the repository at the triggering commit
       
-          # Cache NuGet packages
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with :
+          dotnet-version: 8.0 # Use the .NET SDK version 8.0
+
+      # Cache NuGet packages
       - name: Cache NuGet packages
         uses: actions/cache@v4
         with:
@@ -30,21 +35,40 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nuget-
           
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with :
-          dotnet-version: 8.0 # Use the .NET SDK version 8.0
-
       - name: Restore dependencies
         run: dotnet restore # Restore NuGet packages
-      
+
+      # Restore build cache (bin/obj)
+      - name: Restore build cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            **/bin
+            **/obj
+          key: ${{ runner.os }}-build-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-build-
+
       - name: Build
         run: dotnet build --configuration Release --no-restore # Build the solution
+
+        # Cache build outputs (bin/obj)
+      - name: Cache build outputs
+        uses: actions/cache@v3
+        with:
+          path: |
+            **/bin
+            **/obj
+          key: ${{ runner.os }}-build-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-build-
       
   test:
     needs: build  # Ensure the test job runs after the build job
     runs-on: ubuntu-latest  # Or windows-latest depending on your needs
-    
+
     steps:
+      # Runs unit tests in Release configuration without rebuilding or restoring dependencies
+      # and fails the job if any test fails
       - name: Test
-        run: dotnet test --configuration Release --no-restore # Run your tests
+        run: dotnet test --configuration Release --no-build --no-restore --fail-on=any

@@ -14,7 +14,7 @@ on:
   workflow_dispatch:  # Allow workflow to be triggered Manually
 
 jobs:
-  build-and-test:
+  build:
     runs-on: ubuntu-latest # Use a Linux VM for perfomance
 
     steps:
@@ -41,5 +41,10 @@ jobs:
       - name: Build
         run: dotnet build --configuration Release --no-restore # Build the solution
       
+  test:
+    needs: build  # Ensure the test job runs after the build job
+    runs-on: ubuntu-latest  # Or windows-latest depending on your needs
+    
+    steps:
       - name: Test
         run: dotnet test --configuration Release --no-restore # Run your tests

@@ -19,13 +19,15 @@ jobs:
     timeout-minutes: 30  # Set a timeout of 30 minutes for this job
 
     steps:
+      # Fetch the repository at the triggering commit
       - name: Checkout code
-        uses: actions/checkout@v4 # Fetch the repository at the triggering commit
+        uses: actions/checkout@v4
       
+      # Use the .NET SDK version 8.0
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with :
-          dotnet-version: 8.0 # Use the .NET SDK version 8.0
+          dotnet-version: 8.0
 
       # Cache NuGet packages
       - name: Cache NuGet packages
@@ -35,9 +37,11 @@ jobs:
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}  # Cache key depends on .csproj file hashes
           restore-keys: |
             ${{ runner.os }}-nuget-
-          
+
+      # Restore NuGet packages 
+      # Uses cache to avoid restoring unchanged packages 
       - name: Restore dependencies
-        run: dotnet restore # Restore NuGet packages
+        run: dotnet restore
 
       # Restore build cache (bin/obj)
       - name: Restore build cache
@@ -50,10 +54,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-build-
 
+      # Build the solution in Release configuration restoring dependencie
+      # Uses cache to avoid rebuilding unchanged files
       - name: Build
-        run: dotnet build --configuration Release --no-restore # Build the solution
+        run: dotnet build --configuration Release --no-restore
 
-        # Cache build outputs (bin/obj)
+      # Cache build outputs (bin/obj)
       - name: Cache build outputs
         uses: actions/cache@v4
         with:
@@ -63,28 +69,8 @@ jobs:
           key: ${{ runner.os }}-build-${{ hashFiles('**/*.csproj') }}
           restore-keys: |
             ${{ runner.os }}-build-
-      - name: List directory contents
-        run: ls -R
-          # Upload the build artifacts so the tests job can access them
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-output
-          path: ./LeetCodePatterns/bin/Release/net8.0
-      
-  test:
-    needs: build  # Ensure the test job runs after the build job
-    runs-on: ubuntu-latest  # Or windows-latest depending on your needs
-    timeout-minutes: 30  # Set a timeout of 30 minutes for this job
 
-    steps:
-      # Download the build artifacts uploaded by the build job
-      - name: Download build artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: build-output
-      - name: List directory contents
-        run: ls -R
       # Runs unit tests in Release configuration without rebuilding or restoring dependencies
       - name: Test
         run: dotnet test --configuration Release --no-build --no-restore
+      
